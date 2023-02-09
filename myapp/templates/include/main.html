@@ -5,7 +5,7 @@
     <a href="{% url 'registration' %}">Sign up</a>
 {% else %}
     {% if user.is_superuser %}
-        <a href="{% url 'add_product' %}">Products</a>
+        <a href="{% url 'product' %}">Products</a>
         <a href="{% url 'purchases' %}">Purchases</a>
         <a href="{% url 'returns' %}">Returns</a>
         <a href="{% url 'logout' %}">log out</a>

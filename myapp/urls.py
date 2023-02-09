@@ -1,7 +1,15 @@
-from django.urls import path
-from .views import
+from django.urls import path, include
+from django.contrib.auth import views
+from .views import UserCreateView, ProductListView, ProductUpdateView, ProductCreateView, ReturnCreateView
 
 
 urlpatterns = [
-    path(', ')
+    path('', ProductListView.as_view(), name='home'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('registration/', UserCreateView.as_view(), name='registration'),
+    path('product/', ProductCreateView.as_view(), name='product'),
+    # path('purchase_add/<int:pk>', PurchaseCreateView.as_view(), name='purchase_add'),
+    path('product_change/<int:pk>', ProductUpdateView.as_view(), name='product_change'),
+    path('purchases/', PurchaseListView.as_view(), name='purchases'),
+    path('return_add/<int:pk>', ReturnCreateView.as_view(), name='return_add'),
 ]

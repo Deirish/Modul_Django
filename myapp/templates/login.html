@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% load static %}
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'myapp/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <div class="main_form">
+    <h2>Login</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+    </div>
+{% endblock %}

@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'myapp/base.html' %}
+{% block title %}Purchases{% endblock %}
+{% block content %}
+    <div class="list">
+    <h2>Purchases</h2>
+    {% for purchase in page_obj %}
+        <div>
+            <span>Product: {{ purchase }} {{ purchase.product.description }}</span>
+            <span>Qty.: {{ purchase.available }}</span>
+            <span>Total amount: {{ purchase.total }} $</span>
+            {% if user.is_superuser %}
+                <span>Purchase ID: {{ purchase.id }}</span>
+                <span>Customer: {{ purchase.client }}</span>
+            {% else %}
+                {% if not purchase.returnpurchase %}
+                <form action="{% url 'return_add' purchase.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="return" type="submit" ><span>Return</span></button>
+                </form>
+                    {% else %}
+                    <h3>Issued return!</h3>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'myapp/base.html' %}
+{% block title %}Create product{% endblock %}
+{% block content %}
+    <div class="main_form">
+    <h2>Create product</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"><span>Create</span></button>
+    </form>
+    </div>
+{% endblock %}
