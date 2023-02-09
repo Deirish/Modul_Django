@@ -1,0 +1,20 @@
+<div class="main">
+<a href="{% url 'home' %}">Home</a>
+{% if not user.is_authenticated %}
+    <a href="{% url 'login' %}">Log in</a>
+    <a href="{% url 'registration' %}">Sign up</a>
+{% else %}
+    {% if user.is_superuser %}
+        <a href="{% url 'add_product' %}">Products</a>
+        <a href="{% url 'purchases' %}">Purchases</a>
+        <a href="{% url 'returns' %}">Returns</a>
+        <a href="{% url 'logout' %}">log out</a>
+        <p>ADMIN</p>
+    {% else %}
+        <a href="{% url 'purchases' %}">My Purchases</a>
+        <a href="{% url 'returns' %}">My Returns</a>
+        <a href="{% url 'logout' %}">log out</a>
+        <p>Cash {{ user.cash }} $</p>
+    {% endif %}
+{% endif %}
+</div>

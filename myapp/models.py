@@ -46,6 +46,8 @@ class Return(models.Model):
 
     class Meta:
         ordering = ['-date']
+        verbose_name = 'return'
+        verbose_name_plural = 'returns'
 
     def __str__(self):
         return self.purchase
