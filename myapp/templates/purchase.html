@@ -1,4 +1,4 @@
-{% extends 'myapp/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Purchases{% endblock %}
 {% block content %}
     <div class="list">
@@ -6,11 +6,11 @@
     {% for purchase in page_obj %}
         <div>
             <span>Product: {{ purchase }} {{ purchase.product.description }}</span>
-            <span>Qty.: {{ purchase.available }}</span>
-            <span>Total amount: {{ purchase.total }} $</span>
+            <span>In stock: {{ purchase.available }}</span>
+            <span>Total amount: {{ purchase.total }} UAH</span>
             {% if user.is_superuser %}
                 <span>Purchase ID: {{ purchase.id }}</span>
-                <span>Customer: {{ purchase.client }}</span>
+                <span>Client: {{ purchase.client }}</span>
             {% else %}
                 {% if not purchase.returnpurchase %}
                 <form action="{% url 'return_add' purchase.id %}" method="post">

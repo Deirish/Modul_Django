@@ -1,4 +1,4 @@
-{% extends 'myapp/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Returns{% endblock %}
 {% block content %}
     <div class="list">
@@ -10,7 +10,7 @@
             <span>Product: {{ return }} {{ return.purchase.product.description }}</span>
             <span>Refund amount: {{ return.purchase.purchase_amount }} $</span>
             {% if user.is_superuser %}
-                <span>Customer: {{ return.purchase.client }}</span>
+                <span>Client: {{ return.purchase.client }}</span>
                 <form action="{% url 'return_del' return.id %}" method="post">
                     {% csrf_token %}
                     <button class="reject" type="submit">Reject</button>

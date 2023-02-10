@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.utils import timezone
 from django.http import HttpResponseRedirect
-from config.settings import RETURN_TIME_LIMIT
+from myshop.settings import RETURN_TIME_LIMIT
 
 
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
@@ -68,7 +68,7 @@ class PurchaseListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         if not self.request.user.is_superuser:
-            queryset = Purchase.objects.filter(customer=self.request.user)
+            queryset = Purchase.objects.filter(client=self.request.user)
             return queryset
         queryset = Purchase.objects.all()
         return queryset
@@ -84,7 +84,7 @@ class ReturnCreateView(LoginRequiredMixin, CreateView):
         obj = form.save(commit=False)
         purchase_id = self.kwargs.get('pk')
         purchase = Purchase.objects.get(id=purchase_id)
-        check_time = timezone.now() - purchase.date
+        check_time = timezone.now() - purchase.purchase_date
         if check_time.seconds > RETURN_TIME_LIMIT:
             messages.error(self.request, 'Impossible to issue. Time is up!')
             return HttpResponseRedirect('/purchases')
@@ -115,7 +115,7 @@ class PurchaseCreateView(LoginRequiredMixin, CreateView):
         obj.product = product
         obj.client = client
         product.available -= ordered_available
-        client.deposit -= purchase_amount
+        client.cash -= purchase_amount
 
         with transaction.atomic():
             obj.save()

@@ -14,7 +14,7 @@ class Product(models.Model):
     available = models.PositiveSmallIntegerField()
 
     class Meta:
-        ordering = ('name',)
+        ordering = ['name']
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
 
@@ -34,7 +34,7 @@ class Purchase(models.Model):
         verbose_name_plural = 'Purchases'
 
     def __str__(self):
-        return self.product
+        return f'{self.product}'
 
     def total(self):
         return self.product.price * self.available

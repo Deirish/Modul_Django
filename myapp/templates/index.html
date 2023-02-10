@@ -7,16 +7,16 @@
             <img src="media/{{ product.image }}" alt="product_img">
             <p>{{ product.description }}</p>
             {% if product.available %}
-                <p>Price: {{ product.price }} $</p>
-                <p>Qty.: {{ product.available }}</p>
+                <p>Price: {{ product.price }} UAH</p>
+                <p>In stock: {{ product.available }}</p>
             {% else %}
             <p>Not available for order</p>
             {% endif %}
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    <a href="{% url 'product_update' product.id %}">Update</a>
+                    <a href="{% url 'product_change' product.id %}">Update</a>
                 {% else %}
-                    {% if  product.quantity %}
+                    {% if  product.available %}
                     <form action="{% url 'purchase_add' product.id %}" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
