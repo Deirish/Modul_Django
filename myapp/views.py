@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib import messages
@@ -42,7 +43,16 @@ class ProductListView(ListView):
     model = Product
     template_name = 'index.html'
     extra_context = {'form': PurchaseCreateForm}
-    paginate_by = 3
+    paginate_by = 10
+
+
+class Login(LoginView):
+    success_url = '/'
+    template_name = 'login.html'
+
+    def get_success_url(self):
+        return self.success_url
+
 
 
 class ProductCreateView(SuperuserRequiredMixin, CreateView):
@@ -74,29 +84,10 @@ class PurchaseListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class ReturnCreateView(LoginRequiredMixin, CreateView):
-    login_url = reverse_lazy('login')
-    form_class = ReturnCreateForm
-    template_name = 'purchase.html'
-    success_url = reverse_lazy('returns')
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        purchase_id = self.kwargs.get('pk')
-        purchase = Purchase.objects.get(id=purchase_id)
-        check_time = timezone.now() - purchase.purchase_date
-        if check_time.seconds > RETURN_TIME_LIMIT:
-            messages.error(self.request, 'Impossible to issue. Time is up!')
-            return HttpResponseRedirect('/purchases')
-        obj.purchase = purchase
-        obj.save()
-        return super().form_valid(form)
-
-
 class PurchaseCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     form_class = PurchaseCreateForm
-    template_name = 'include/main.html'
+    template_name = 'index.html'
     success_url = reverse_lazy('purchases')
 
     def form_valid(self, form):
@@ -137,6 +128,27 @@ class ReturnListView(LoginRequiredMixin, ListView):
             return queryset
         queryset = Return.objects.all()
         return queryset
+
+
+class ReturnCreateView(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('login')
+    form_class = ReturnCreateForm
+    template_name = 'purchase.html'
+    success_url = reverse_lazy('returns')
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        purchase_id = self.kwargs.get('pk')
+        purchase = Purchase.objects.get(id=purchase_id)
+        check_time = timezone.now() - purchase.purchase_date
+        if check_time.seconds > RETURN_TIME_LIMIT:
+            messages.error(self.request, 'Impossible to issue. Time is up!')
+            return HttpResponseRedirect('/purchases')
+        obj.purchase = purchase
+        obj.save()
+        return super().form_valid(form)
+
+
 
 
 class ReturnDeleteView(SuperuserRequiredMixin, DeleteView):

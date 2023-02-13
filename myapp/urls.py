@@ -1,12 +1,12 @@
 from django.urls import path, include
 from django.contrib.auth import views
-from .views import UserCreateView, ProductListView, ProductUpdateView, ProductCreateView, ReturnCreateView,\
+from .views import Login, UserCreateView, ProductListView, ProductUpdateView, ProductCreateView, ReturnCreateView,\
 PurchaseCreateView, PurchaseListView, ReturnDeleteView, PurchaseDeleteView, ReturnListView
 
 
 urlpatterns = [
     path('', ProductListView.as_view(), name='home'),
-    path('login/', views.LoginView.as_view(), name='login'),
+    path('login/', Login.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('registration/', UserCreateView.as_view(), name='registration'),
     path('product/', ProductCreateView.as_view(), name='product'),
