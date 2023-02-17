@@ -164,7 +164,7 @@ class PurchaseDeleteView(SuperuserRequiredMixin, DeleteView):
         purchase = self.get_object()
         client = purchase.client
         product = purchase.product
-        client.cash += purchase.purchase_amount
+        client.cash += purchase.total()
         product.available += purchase.available
 
         with transaction.atomic():

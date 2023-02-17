@@ -7,15 +7,15 @@
         <div>
             <span>ID: {{ return.id }}</span>
             <span>Date: {{ return.date }}</span>
-            <span>Product: {{ return }} {{ return.purchase.product.description }}</span>
-            <span>Refund amount: {{ return.purchase.purchase_amount }} $</span>
+            <span>Product: {{ return.purchase.product.description }}</span>
+            <span>Refund amount: {{ return.purchase.total }} UAH</span>
             {% if user.is_superuser %}
                 <span>Client: {{ return.purchase.client }}</span>
-                <form action="{% url 'return_del' return.id %}" method="post">
+                <form action="{% url 'delete_return' return.id %}" method="post">
                     {% csrf_token %}
                     <button class="reject" type="submit">Reject</button>
                 </form>
-                <form action="{% url 'purchase_del' return.purchase.id %}" method="post">
+                <form action="{% url 'delete_purchase' return.purchase.id %}" method="post">
                     {% csrf_token %}
                     <button class="confirm" type="submit"><span>Confirm</span></button>
                 </form>
