@@ -134,7 +134,7 @@ class ReturnCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     form_class = ReturnCreateForm
     template_name = 'purchase.html'
-    success_url = reverse_lazy('returns')
+    success_url = reverse_lazy('purchases')
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -142,7 +142,7 @@ class ReturnCreateView(LoginRequiredMixin, CreateView):
         purchase = Purchase.objects.get(id=purchase_id)
         check_time = timezone.now() - purchase.purchase_date
         if check_time.seconds > RETURN_TIME_LIMIT:
-            messages.error(self.request, 'Impossible to issue. Time is up!')
+            messages.error(self.request, 'Impossible to return. Time is up!')
             return HttpResponseRedirect('/purchases')
         obj.purchase = purchase
         obj.save()

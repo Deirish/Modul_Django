@@ -3,6 +3,11 @@
 {% block content %}
     <div class="list">
     <h2>Purchases</h2>
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div><span><strong>{{ message }}</strong></span></div>
+        {% endif %}
+    {% endfor %}
     {% for purchase in page_obj %}
         <div>
             <span>Product: {{ purchase }} {{ purchase.product.description }}</span>
@@ -12,14 +17,14 @@
                 <span>Purchase ID: {{ purchase.id }}</span>
                 <span>Client: {{ purchase.client }}</span>
             {% else %}
-                {% if not purchase.returnpurchase %}
+                {% if not purchase.return %}
                 <form action="{% url 'return_add' purchase.id %}" method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button class="return" type="submit" ><span>Return</span></button>
                 </form>
                     {% else %}
-                    <h3>Issued return!</h3>
+                    <h3>Returned purchase!</h3>
                 {% endif %}
             {% endif %}
         </div>

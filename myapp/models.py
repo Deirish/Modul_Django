@@ -15,8 +15,8 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = 'product'
+        verbose_name_plural = 'products'
 
     def __str__(self):
         return self.name
@@ -30,8 +30,8 @@ class Purchase(models.Model):
 
     class Meta:
         ordering = ['-purchase_date']
-        verbose_name = 'Purchase'
-        verbose_name_plural = 'Purchases'
+        verbose_name = 'purchase'
+        verbose_name_plural = 'purchases'
 
     def __str__(self):
         return f'{self.product}'
@@ -42,12 +42,10 @@ class Purchase(models.Model):
 
 class Return(models.Model):
     purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-date']
-        verbose_name = 'return'
-        verbose_name_plural = 'returns'
 
     def __str__(self):
         return self.purchase
